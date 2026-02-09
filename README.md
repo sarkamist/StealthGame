@@ -39,7 +39,7 @@ The goal is developing a simple top-down stealth game. There must be a main char
 
 ### Developers
 
- - Alejandro Belmonte ([sarkamist](https://github.com/sarkamist/)) - 
+ - Alejandro Belmonte ([sarkamist](https://github.com/sarkamist/))
  - Pau Bofi ([PauBofi](https://github.com/PauBofi))
  - Luca De Marco ([LukeByMark](https://github.com/LukeByMark))
  - Laia Campos ([Loyan06](https://github.com/Loyan06))

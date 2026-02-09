@@ -22,8 +22,8 @@ public class ScoreSystem : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            distanceText = GameObject.Find("Distance")?.GetComponent<Text>();
-            timeText = GameObject.Find("Time")?.GetComponent<Text>();
+            distanceText = GameObject.Find("Distance").GetComponent<Text>();
+            timeText = GameObject.Find("Time").GetComponent<Text>();
         }
     }
 
@@ -41,8 +41,8 @@ public class ScoreSystem : MonoBehaviour
     {
         totalTime += Time.deltaTime;
 
-        distanceText.text = $"Distance: {totalDistance.ToString("0")} units";
-        timeText.text = $"Time: {totalTime.ToString("0.00")} sec";
+        distanceText.text = $"Distance: {totalDistance:0} units";
+        timeText.text = $"Time: {totalTime:0.00} sec";
     }
 
     private void OnDistanceChange(float positionDelta)
