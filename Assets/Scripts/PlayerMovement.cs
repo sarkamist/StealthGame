@@ -1,28 +1,46 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    private float Speed = 5.0f;
-
     Rigidbody2D rigidbody;
     private bool isMoving;
+    private Vector2 lastPosition;
 
     private int score = 2000;
 
+    [SerializeField]
+    private float Speed = 5.0f;
     public bool IsMoving => isMoving;
 
-    void Start()
+    public static Action<float> OnDistanceChange;
+
+    void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void OnMove(InputValue value)
+    void OnEnable()
     {
-        // Read value from control, the type depends on what
-        // type of controls the action is bound to
+        lastPosition = rigidbody.position;
+    }
+
+    void Update()
+    {
+        float positionDelta = Vector2.Distance(rigidbody.position, lastPosition);
+
+        if (positionDelta > 0.01f)
+        {
+            OnDistanceChange?.Invoke(positionDelta);
+            lastPosition = rigidbody.position;
+        }
+    }
+
+    private void OnMove(InputValue value)
+    {
         var moveDir = value.Get<Vector2>();
+        Debug.Log(moveDir);
 
         Vector2 velocity = moveDir * Speed;
         rigidbody.linearVelocity = velocity;
@@ -36,10 +54,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // NOTE: InputSystem: "SaveScore" action becomes "OnSaveScore" method
     public void OnSaveScore()
     {
-        // Usage example on how to save score
         PlayerPrefs.SetInt("Score", score);
         score = PlayerPrefs.GetInt("Score");
     }
