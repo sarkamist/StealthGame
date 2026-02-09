@@ -10,6 +10,8 @@ public class ScoreSystem : MonoBehaviour
 
     private Text distanceText;
     private Text timeText;
+    public Text textScore;
+    public Text textHiScore;
 
     void Awake()
     {
@@ -43,10 +45,26 @@ public class ScoreSystem : MonoBehaviour
 
         distanceText.text = $"Distance: {totalDistance:0} units";
         timeText.text = $"Time: {totalTime:0.00} sec";
+        textScore.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
     }
 
     private void OnDistanceChange(float positionDelta)
     {
         totalDistance += positionDelta;
+    }
+
+    public float CalculateScore (float distance, float time)
+    {
+        const float minDistance = 600f;
+        const float minTime = 6f;
+
+        float distanceW = 0.4f;
+        float timeW = 0.6f;
+
+        float normDistance = distance / minDistance;
+        float normTime = minTime / time;
+
+        float score = distanceW * normDistance + timeW * normTime;
+        return score;
     }
 }
