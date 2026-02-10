@@ -17,8 +17,8 @@ public class PatrollingEnemy : MonoBehaviour
     private Transform currentTarget;
 
     public List<Transform> Waypoints;
-    public float PatrolSpeed = 2.0f;
-    public float ChaseSpeed = 3.0f;
+    public float PatrolSpeed = 1.5f;
+    public float ChaseSpeed = 2.0f;
     public float ReachDistance = 0.1f;
     public float RotationSpeed = 180.0f;
     public float AlignmentThreshold = 5.0f;
@@ -57,6 +57,14 @@ public class PatrollingEnemy : MonoBehaviour
                 break;
             case PatrollingEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
+
+                float colliderRadius = GetComponent<CapsuleCollider2D>().size.x;
+                Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
+
+                if (playerCollider.Length > 0)
+                {
+                    SceneChanger.Instance.OnPlayerCaught();
+                }
 
                 if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
                 {

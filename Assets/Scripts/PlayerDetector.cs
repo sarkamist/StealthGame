@@ -108,6 +108,6 @@ public class PlayerDetector : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, DetectionRange, WhatIsVisible);
 
-        return (hit.collider.transform == target);
+        return (hit.collider?.transform == target);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterWalkFrontBehaviour : StateMachineBehaviour
+public class BouncerWalkBackBehaviour : StateMachineBehaviour
 {
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -9,11 +9,11 @@ public class CharacterWalkFrontBehaviour : StateMachineBehaviour
         if (currentVelocity.x != 0)
         {
             animator.SetBool("IsWalkingSide", true);
-            animator.SetBool("IsWalkingFront", false);
+            animator.SetBool("IsWalkingBack", false);
         }
-        else if(currentVelocity.y >= 0)
+        else if (currentVelocity.y <= 0)
         {
-            animator.SetBool("IsWalkingFront", false);
+            animator.SetBool("IsWalkingBack", false);
         }
     }
 }

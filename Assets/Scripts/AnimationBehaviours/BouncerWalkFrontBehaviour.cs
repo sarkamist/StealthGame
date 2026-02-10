@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterWalkFrontBehaviour : StateMachineBehaviour
+public class BouncerWalkFrontBehaviour : StateMachineBehaviour
 {
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
