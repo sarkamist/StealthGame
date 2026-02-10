@@ -11,16 +11,19 @@ public class WaitingEnemy : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
-    [SerializeField] private WaitingEnemyStates currentState;
+    private WaitingEnemyStates currentState;
     private Transform originPoint;
     private Transform currentTarget;
     private bool isExposingPlayer = false;
     private float currentExposureTime = 0;
 
-    [SerializeField]
-    public float RotationSpeed = 180.0f;
+    [SerializeField] private SpriteRenderer alarmSpriteRenderer;
+    [SerializeField] private Sprite NormalAlarm;
+    [SerializeField] private Sprite ActiveAlarm; 
+
+    public float RotationSpeed = 1.0f;
     public float MaxExposureTime = 1.0f;
-    public float ChaseSpeed = 2.0f;
+    public float ChaseSpeed = 4.0f;
     public float ReachDistance = 0.1f;
     public float AlignmentThreshold = 5f;
 
@@ -30,8 +33,9 @@ public class WaitingEnemy : MonoBehaviour
         playerDetector = GetComponentInChildren<PlayerDetector>();
         currentState = WaitingEnemyStates.Wait;
         originPoint = new GameObject($"{name}Origin").transform;
-        originPoint.SetParent(GameObject.Find("EnemyWaypoints").transform);
+        originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
+        alarmSpriteRenderer.sprite = NormalAlarm;
     }
 
     void FixedUpdate()
@@ -48,7 +52,7 @@ public class WaitingEnemy : MonoBehaviour
                 {
                     isExposingPlayer = true;
                 }
-                else if (isExposingPlayer && !playerDetector.IsPlayerDetected)
+                else if (isExposingPlayer && !playerDetector.DetectedPlayer)
                 {
                     isExposingPlayer = false;
                     currentExposureTime = 0;
@@ -59,26 +63,19 @@ public class WaitingEnemy : MonoBehaviour
                     currentExposureTime += Time.fixedDeltaTime;
                     if (currentExposureTime >= MaxExposureTime)
                     {
+                        Debug.Log("change to chase!");
                         currentTarget = playerDetector.DetectedPlayer;
                         ChangeState(WaitingEnemyStates.Chase);
                     }
                 }
                 else
                 {
-                    rigidbody.transform.Rotate(0, 0, RotationSpeed * Time.fixedDeltaTime);
+                    rigidbody.transform.Rotate(0, 0, RotationSpeed);
                 }
 
                 break;
             case WaitingEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
-
-                float colliderRadius = GetComponent<CircleCollider2D>().radius;
-                Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
-
-                if (playerCollider.Length > 0)
-                {
-                    SceneChanger.Instance.OnPlayerCaught();
-                }
 
                 if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
                 {
@@ -91,6 +88,7 @@ public class WaitingEnemy : MonoBehaviour
 
                 if (Vector2.Distance((Vector2)currentTarget.position, rigidbody.position) <= ReachDistance)
                 {
+                    Debug.Log("change state");
                     ChangeState(WaitingEnemyStates.Wait);
                 }
 
@@ -119,12 +117,15 @@ public class WaitingEnemy : MonoBehaviour
         switch (currentState)
         {
             case WaitingEnemyStates.Wait:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 break;
             case WaitingEnemyStates.Chase:
+                alarmSpriteRenderer.sprite = ActiveAlarm;
+                Debug.Log("changing to chase!");
                 break;
             case WaitingEnemyStates.Returning:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 currentTarget = originPoint;
-
                 break;
         }
     }
@@ -132,6 +133,7 @@ public class WaitingEnemy : MonoBehaviour
     private void MoveToCurrentTarget(float speed)
     {
         if (currentTarget == null) return;
+        Debug.Log("moving!");
 
         Vector2 direction = ((Vector2)currentTarget.position - rigidbody.position).normalized;
 
