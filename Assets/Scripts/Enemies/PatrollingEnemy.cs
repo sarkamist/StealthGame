@@ -20,8 +20,8 @@ public class PatrollingEnemy : MonoBehaviour
     public float PatrolSpeed = 2.0f;
     public float ChaseSpeed = 3.0f;
     public float ReachDistance = 0.1f;
-    public float RotationSpeed = 180f;
-    public float AlignmentThreshold = 5f;
+    public float RotationSpeed = 180.0f;
+    public float AlignmentThreshold = 5.0f;
 
     void Start()
     {

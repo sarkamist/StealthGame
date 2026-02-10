@@ -11,14 +11,14 @@ public class WaitingEnemy : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
-    private WaitingEnemyStates currentState;
+    [SerializeField] private WaitingEnemyStates currentState;
     private Transform originPoint;
     private Transform currentTarget;
     private bool isExposingPlayer = false;
     private float currentExposureTime = 0;
 
     [SerializeField]
-    public float RotationSpeed = 1.0f;
+    public float RotationSpeed = 180.0f;
     public float MaxExposureTime = 1.0f;
     public float ChaseSpeed = 4.0f;
     public float ReachDistance = 0.1f;
@@ -59,14 +59,13 @@ public class WaitingEnemy : MonoBehaviour
                     currentExposureTime += Time.fixedDeltaTime;
                     if (currentExposureTime >= MaxExposureTime)
                     {
-                        Debug.Log("change to chase!");
                         currentTarget = playerDetector.DetectedPlayer;
                         ChangeState(WaitingEnemyStates.Chase);
                     }
                 }
                 else
                 {
-                    rigidbody.transform.Rotate(0, 0, RotationSpeed);
+                    rigidbody.transform.Rotate(0, 0, RotationSpeed * Time.fixedDeltaTime);
                 }
 
                 break;
@@ -84,7 +83,6 @@ public class WaitingEnemy : MonoBehaviour
 
                 if (Vector2.Distance((Vector2)currentTarget.position, rigidbody.position) <= ReachDistance)
                 {
-                    Debug.Log("change state");
                     ChangeState(WaitingEnemyStates.Wait);
                 }
 
@@ -115,7 +113,6 @@ public class WaitingEnemy : MonoBehaviour
             case WaitingEnemyStates.Wait:
                 break;
             case WaitingEnemyStates.Chase:
-                Debug.Log("changing to chase!");
                 break;
             case WaitingEnemyStates.Returning:
                 currentTarget = originPoint;
@@ -127,7 +124,6 @@ public class WaitingEnemy : MonoBehaviour
     private void MoveToCurrentTarget(float speed)
     {
         if (currentTarget == null) return;
-        Debug.Log("moving!");
 
         Vector2 direction = ((Vector2)currentTarget.position - rigidbody.position).normalized;
 
