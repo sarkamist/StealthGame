@@ -45,7 +45,7 @@ public class ScoreSystem : MonoBehaviour
 
         distanceText.text = $"Distance: {totalDistance:0} units";
         timeText.text = $"Time: {totalTime:0.00} sec";
-        textScore.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
+        //textScore.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
     }
 
     private void OnDistanceChange(float positionDelta)

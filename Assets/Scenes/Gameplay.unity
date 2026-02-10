@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 26318898}
   m_Layer: 0
-  m_Name: WayPoint01 (2)
+  m_Name: Enemy01Waypoint03
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -223,12 +223,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 26318897}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.22, y: -0.38, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.29, y: -1.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1903608868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &473472529
 GameObject:
@@ -239,7 +239,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 473472530}
-  m_Layer: 0
+  - component: {fileID: 473472531}
+  m_Layer: 7
   m_Name: DetectionPoint
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
@@ -255,12 +256,32 @@ Transform:
   m_GameObject: {fileID: 473472529}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2108089968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &473472531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473472529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df945ebfe8d82354e9827ac814566ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDetector
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  WhatIsVisible:
+    serializedVersion: 2
+    m_Bits: 769
+  DetectionRange: 2
+  VisionAngle: 67.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +400,7 @@ GameObject:
   - component: {fileID: 567589345}
   - component: {fileID: 567589346}
   - component: {fileID: 567589347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Alarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -665,7 +686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619275482}
   - component: {fileID: 619275483}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4299,7 +4320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1676401834}
   m_Layer: 0
-  m_Name: WayPoint01 (1)
+  m_Name: Enemy01Waypoint02
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4313,12 +4334,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1676401833}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.12, y: -0.37, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.74, y: -1.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1903608868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1688634869
 GameObject:
@@ -4330,7 +4351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1688634870}
   m_Layer: 0
-  m_Name: WayPoint01
+  m_Name: Enemy01Waypoint01
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4344,12 +4365,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1688634869}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.28, y: 0.68, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.72, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1903608868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1701691613
 GameObject:
@@ -4481,7 +4502,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
+  m_Radius: 0.2
 --- !u!50 &1701691620
 Rigidbody2D:
   serializedVersion: 5
@@ -4490,7 +4511,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701691613}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -4521,7 +4542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991a75c65752d5e4ea272dbab50837df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
+  PatrolSpeed: 5
 --- !u!114 &1701691624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4594,6 +4615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c934838786565d4bb8956e1c4864524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreSystem
+  textScore: {fileID: 0}
+  textHiScore: {fileID: 0}
 --- !u!4 &1788825741
 Transform:
   m_ObjectHideFlags: 0
@@ -4655,6 +4678,40 @@ Transform:
   - {fileID: 724497891}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1903608867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1903608868}
+  m_Layer: 0
+  m_Name: Waypoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1903608868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903608867}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1688634870}
+  - {fileID: 1676401834}
+  - {fileID: 26318898}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2108089965
 GameObject:
   m_ObjectHideFlags: 0
@@ -4664,12 +4721,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108089968}
-  - component: {fileID: 2108089970}
   - component: {fileID: 2108089969}
-  m_Layer: 0
+  - component: {fileID: 2108089971}
+  - component: {fileID: 2108089970}
+  m_Layer: 7
   m_Name: Enemy01
   m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4699,14 +4757,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108089965}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -4730,11 +4788,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c12f6d7dcfeabd40abdd26c5f5c27df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatrollingEnemy
-  WayPoints:
-  - {fileID: 1688634869}
-  - {fileID: 1676401833}
-  - {fileID: 26318897}
-  Speed: 0.5
+  PatrolSpeed: 2
+  ChaseSpeed: 4
+  ReachDistance: 0.1
+  Waypoints:
+  - {fileID: 1688634870}
+  - {fileID: 1676401834}
+  - {fileID: 26318898}
+--- !u!58 &2108089971
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108089965}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4746,6 +4842,4 @@ SceneRoots:
   - {fileID: 1865967370}
   - {fileID: 796000938}
   - {fileID: 1788825741}
-  - {fileID: 1688634870}
-  - {fileID: 1676401834}
-  - {fileID: 26318898}
+  - {fileID: 1903608868}

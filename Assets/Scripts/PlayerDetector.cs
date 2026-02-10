@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
-using System.Collections.Generic;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.UIElements;
+
 public class PlayerDetector : MonoBehaviour
 {
     public LayerMask PlayerLayer;
@@ -8,15 +9,45 @@ public class PlayerDetector : MonoBehaviour
     public float DetectionRange;
     public float VisionAngle;
 
+    public static Action<PlayerDetector, Transform> OnPlayerDetected;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Vector3 origin = transform.position;
+        float halfAngle = VisionAngle * 0.5f;
+        int arcSegments = 20;
+
+        Vector3 prev = origin;
+
+        for (int i = 0; i <= arcSegments; i++)
+        {
+            float t = i / (float) arcSegments;
+            float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
+
+            Vector3 dir = Quaternion.AngleAxis(angle, Vector3.forward) * transform.right;
+
+            Vector3 point = origin + dir.normalized * DetectionRange;
+
+            Gizmos.DrawLine(prev, point);
+            prev = point;
+        }
+        Gizmos.DrawLine(prev, origin);
+
+        Gizmos.color = Color.white;
+    }
+
     private void Update()
     {
-        if (PlayerDetected())
+        Transform playerTransform = PlayerDetected();
+        if (playerTransform != null)
         {
-            Debug.Log("Player detection");
+            OnPlayerDetected?.Invoke(this, playerTransform);
         }
     }
 
-    private bool PlayerDetected()
+    private Transform PlayerDetected()
     {
         Transform playerTransform = null;
 
@@ -28,7 +59,7 @@ public class PlayerDetector : MonoBehaviour
             }
         }
 
-        return (playerTransform != null);
+        return playerTransform;
     }
 
     private bool PlayerInRange(ref Transform playerTransform)
