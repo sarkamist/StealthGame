@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerDetector : MonoBehaviour
 {
@@ -9,7 +7,8 @@ public class PlayerDetector : MonoBehaviour
     public float DetectionRange;
     public float VisionAngle;
 
-    public static Action<PlayerDetector, Transform> OnPlayerDetected;
+    public bool IsPlayerDetected;
+    public Transform DetectedPlayer;
 
     private void OnDrawGizmos()
     {
@@ -40,14 +39,10 @@ public class PlayerDetector : MonoBehaviour
 
     private void Update()
     {
-        Transform playerTransform = PlayerDetected();
-        if (playerTransform != null)
-        {
-            OnPlayerDetected?.Invoke(this, playerTransform);
-        }
+        PlayerDetected();
     }
 
-    private Transform PlayerDetected()
+    private void PlayerDetected()
     {
         Transform playerTransform = null;
 
@@ -59,7 +54,8 @@ public class PlayerDetector : MonoBehaviour
             }
         }
 
-        return playerTransform;
+        DetectedPlayer = playerTransform;
+        IsPlayerDetected = (DetectedPlayer != null);
     }
 
     private bool PlayerInRange(ref Transform playerTransform)
