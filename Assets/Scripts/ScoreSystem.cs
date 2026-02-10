@@ -61,16 +61,6 @@ public class ScoreSystem : MonoBehaviour
 
     public int CalculateScore (float distance, float time)
     {
-        float distOver = Mathf.Max(0f, totalDistance - DistanceThreshold);
-        float timeOver = Mathf.Max(0f, totalTime - TimeThreshold);
-
-        float distPenalty = distOver / (distOver + DistanceSoftness);
-        float timePenalty = timeOver / (timeOver + TimeSoftness);
-
-        float combinedPenalty = (DistanceScoreWeight * distPenalty) + (TimeScoreWeight * timePenalty);
-
-        float tmp = MaximumScore * (1f - combinedPenalty);
-        int score = Mathf.Clamp(Mathf.RoundToInt(tmp), 0, MaximumScore);
-        return score;
+        return 999;
     }
 }
