@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private int score = 2000;
 
     [SerializeField]
-    private float PatrolSpeed = 5.0f;
+    private float Speed = 5.0f;
     public bool IsMoving => isMoving;
 
     public static Action<float> OnDistanceChange;
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         var moveDir = value.Get<Vector2>();
 
-        Vector2 velocity = moveDir * PatrolSpeed;
+        Vector2 velocity = moveDir * Speed;
         rigidbody.linearVelocity = velocity;
 
         isMoving = (velocity.magnitude > 0.01f);
