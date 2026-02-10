@@ -70,20 +70,6 @@ public class PatrollingEnemy : MonoBehaviour
                 }
                 break;
             case PatrollingEnemyStates.Chase:
-                if (currentTarget != null)
-                {
-                    Vector2 direction = ((Vector2)currentTarget.position - rigidbody.position).normalized;
-                    Vector2 velocity = direction * ChaseSpeed;
-                    rigidbody.linearVelocity = velocity;
-
-                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.Euler(0, 0, angle);
-                }
-
-                if (Vector2.Distance(currentTarget.position, rigidbody.position) <= ReachDistance)
-                {
-                    currentTarget.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                }
                 break;
             case PatrollingEnemyStates.Returning:
                 break;
