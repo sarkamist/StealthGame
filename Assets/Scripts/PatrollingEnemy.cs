@@ -1,6 +1,8 @@
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 enum PatrollingEnemyStates
 {
@@ -13,43 +15,61 @@ public class PatrollingEnemy : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private PatrollingEnemyStates currentState;
-    private Transform currentTarget;
+    private int currentWayPoint;
     private bool isMoving;
 
     [SerializeField]
-    public float PatrolSpeed = 2.0f;
-    public float ChaseSpeed = 4.0f;
-    public float ReachDistance = 0.1f;
-    public List<Transform> Waypoints;
-    
+    public List<GameObject> WayPoints;
+    public float Speed = 4.0f; 
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         currentState = PatrollingEnemyStates.Patrol;
-        currentTarget = Waypoints.FirstOrDefault();
+        currentWayPoint = 0;
         isMoving = false;
-    }
-
-    private void OnEnable()
-    {
-        PlayerDetector.OnPlayerDetected += OnPlayerDetected;
-    }
-
-    private void OnDisable()
-    {
-        PlayerDetector.OnPlayerDetected -= OnPlayerDetected;
     }
 
     void FixedUpdate()
     {
-        FixedUpdateState();
-    }
-
-    private void FixedUpdateState()
-    {
-        switch (currentState)
+        GameObject targetWaypoint = WayPoints[currentWayPoint];
+        
+        if (!isMoving && targetWaypoint !=null)
         {
-            case PatrollingEnemyStates.Patrol:
+            Debug.Log("new waypoint");
+           Vector2 direction = ((Vector2)targetWaypoint.transform.position - rigidbody.position).normalized;
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            Vector2 velocity = direction * Speed;
+            rigidbody.linearVelocity = velocity;
+
+<<<<<<< Updated upstream
+            isMoving = true;
+=======
+                    currentIndex++;
+                    if (currentIndex >= Waypoints.Count) currentIndex = 0;
+                    currentTarget = Waypoints[currentIndex];
+                }
+                break;
+            case PatrollingEnemyStates.Chase:
+                if (currentTarget != null)
+                {
+                    Vector2 direction = ((Vector2)currentTarget.position - rigidbody.position).normalized;
+                    Vector2 velocity = direction * PatrolSpeed;
+                    rigidbody.linearVelocity = velocity;
+
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.Euler(0, 0, angle);
+                }
+
+                if (Vector2.Distance(currentTarget.position, rigidbody.position) > 3.0f)
+                {
+                    ChangeState(PatrollingEnemyStates.Returning);
+                }
+                break;
+            case PatrollingEnemyStates.Returning:
                 if (currentTarget != null)
                 {
                     Vector2 direction = ((Vector2)currentTarget.position - rigidbody.position).normalized;
@@ -62,27 +82,29 @@ public class PatrollingEnemy : MonoBehaviour
 
                 if (Vector2.Distance(currentTarget.position, rigidbody.position) <= ReachDistance)
                 {
-                    int currentIndex = Waypoints.IndexOf(currentTarget);
-
-                    currentIndex++;
-                    if (currentIndex >= Waypoints.Count) currentIndex = 0;
-                    currentTarget = Waypoints[currentIndex];
+                    ChangeState(PatrollingEnemyStates.Patrol);
                 }
                 break;
-            case PatrollingEnemyStates.Chase:
-                break;
-            case PatrollingEnemyStates.Returning:
-                break;
+>>>>>>> Stashed changes
         }
-    }
-
-    private void ChangeState(PatrollingEnemyStates newState)
-    {
-        switch (currentState)
+        Debug.Log(Vector2.Distance(targetWaypoint.transform.position, rigidbody.position));
+        if (isMoving && Vector2.Distance(targetWaypoint.transform.position, rigidbody.position)<= 0.10f)
         {
+<<<<<<< Updated upstream
+            currentWayPoint++;
+            if (currentWayPoint >= WayPoints.Count)
+            {
+                currentWayPoint = 0;
+                
+            }
+            isMoving = false;
+        }
+
+=======
             case PatrollingEnemyStates.Patrol:
                 break;
             case PatrollingEnemyStates.Chase:
+                rigidbody.linearVelocity = Vector2.zero;
                 break;
             case PatrollingEnemyStates.Returning:
                 break;
@@ -96,6 +118,18 @@ public class PatrollingEnemy : MonoBehaviour
             case PatrollingEnemyStates.Chase:
                 break;
             case PatrollingEnemyStates.Returning:
+                Transform closestWaypoint = null;
+                float closestDistance = float.MaxValue;
+                foreach (Transform w in Waypoints)
+                {
+                    float currentDistance = Vector2.Distance(w.position, rigidbody.position);
+                    if (currentDistance < closestDistance)
+                    {
+                        closestDistance = currentDistance;
+                        closestWaypoint = w;
+                    }
+                }
+                currentTarget = closestWaypoint;
                 break;
         }
     }
@@ -106,5 +140,6 @@ public class PatrollingEnemy : MonoBehaviour
             currentTarget = playerTransform;
             ChangeState(PatrollingEnemyStates.Chase);
         }
+>>>>>>> Stashed changes
     }
 }
