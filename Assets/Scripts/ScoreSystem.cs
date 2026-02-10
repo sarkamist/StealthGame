@@ -10,8 +10,7 @@ public class ScoreSystem : MonoBehaviour
 
     private Text distanceText;
     private Text timeText;
-    public Text textScore;
-    public Text textHiScore;
+    public Text scoreText;
 
     void Awake()
     {
@@ -26,6 +25,7 @@ public class ScoreSystem : MonoBehaviour
 
             distanceText = GameObject.Find("Distance").GetComponent<Text>();
             timeText = GameObject.Find("Time").GetComponent<Text>();
+            scoreText = GameObject.Find("Score").GetComponent<Text>();
         }
     }
 
@@ -45,7 +45,7 @@ public class ScoreSystem : MonoBehaviour
 
         distanceText.text = $"Distance: {totalDistance:0} units";
         timeText.text = $"Time: {totalTime:0.00} sec";
-        //textScore.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
+        scoreText.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
     }
 
     private void OnDistanceChange(float positionDelta)
@@ -66,5 +66,16 @@ public class ScoreSystem : MonoBehaviour
 
         float score = distanceW * normDistance + timeW * normTime;
         return score;
+    }
+    
+    public void OnSaveScore()
+    {
+        score = CalculateScore(totalDistance, totalTime);
+        float storedScore = PlayerPrefs.GetFloat("Score");
+
+        if (score < storedScore)
+        {
+            PlayerPrefs.SetFloat("Score", storedScore)
+        }
     }
 }
