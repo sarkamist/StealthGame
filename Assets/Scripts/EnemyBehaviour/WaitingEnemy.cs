@@ -17,7 +17,10 @@ public class WaitingEnemy : MonoBehaviour
     private bool isExposingPlayer = false;
     private float currentExposureTime = 0;
 
-    [SerializeField]
+    [SerializeField] private SpriteRenderer alarmSpriteRenderer;
+    [SerializeField] private Sprite NormalAlarm;
+    [SerializeField] private Sprite ActiveAlarm; 
+
     public float RotationSpeed = 1.0f;
     public float MaxExposureTime = 1.0f;
     public float ChaseSpeed = 4.0f;
@@ -32,6 +35,7 @@ public class WaitingEnemy : MonoBehaviour
         originPoint = new GameObject($"{name}Origin").transform;
         originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
+        alarmSpriteRenderer.sprite = NormalAlarm;
     }
 
     void FixedUpdate()
@@ -48,7 +52,7 @@ public class WaitingEnemy : MonoBehaviour
                 {
                     isExposingPlayer = true;
                 }
-                else if (isExposingPlayer && !playerDetector.IsPlayerDetected)
+                else if (isExposingPlayer && !playerDetector.DetectedPlayer)
                 {
                     isExposingPlayer = false;
                     currentExposureTime = 0;
@@ -113,13 +117,15 @@ public class WaitingEnemy : MonoBehaviour
         switch (currentState)
         {
             case WaitingEnemyStates.Wait:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 break;
             case WaitingEnemyStates.Chase:
+                alarmSpriteRenderer.sprite = ActiveAlarm;
                 Debug.Log("changing to chase!");
                 break;
             case WaitingEnemyStates.Returning:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 currentTarget = originPoint;
-
                 break;
         }
     }

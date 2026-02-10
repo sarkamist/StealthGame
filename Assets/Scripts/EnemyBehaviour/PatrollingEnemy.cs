@@ -16,6 +16,10 @@ public class PatrollingEnemy : MonoBehaviour
     private PatrollingEnemyStates currentState;
     private Transform currentTarget;
 
+    [SerializeField] private SpriteRenderer alarmSpriteRenderer;
+    [SerializeField] private Sprite NormalAlarm;
+    [SerializeField] private Sprite ActiveAlarm;
+
     public List<Transform> Waypoints;
     public float PatrolSpeed = 2.0f;
     public float ChaseSpeed = 3.0f;
@@ -23,12 +27,14 @@ public class PatrollingEnemy : MonoBehaviour
     public float RotationSpeed = 180f;
     public float AlignmentThreshold = 5f;
 
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         playerDetector = GetComponentInChildren<PlayerDetector>();
         currentState = PatrollingEnemyStates.Patrol;
         currentTarget = Waypoints.FirstOrDefault();
+        alarmSpriteRenderer.sprite = NormalAlarm;
     }
 
     void FixedUpdate()
@@ -93,10 +99,14 @@ public class PatrollingEnemy : MonoBehaviour
         switch (currentState)
         {
             case PatrollingEnemyStates.Patrol:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 break;
             case PatrollingEnemyStates.Chase:
+                alarmSpriteRenderer.sprite = ActiveAlarm;
+                Debug.Log("changing to chase!");
                 break;
             case PatrollingEnemyStates.Returning:
+                alarmSpriteRenderer.sprite = NormalAlarm;
                 Transform closestWaypoint = null;
                 float closestDistance = float.MaxValue;
 
