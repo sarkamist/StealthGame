@@ -58,7 +58,7 @@ public class PatrollingEnemy : MonoBehaviour
             case PatrollingEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
 
-                float colliderRadius = GetComponent<CapsuleCollider2D>().size.x;
+                float colliderRadius = GetComponent<CircleCollider2D>().radius;
                 Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
 
                 if (playerCollider.Length > 0)

@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 7f49df8587e45054a8d97c4fac7c3494
+guid: c8d40e2121ef75d4abcb3f11a51ed1b6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1261931485134212400
-    second: BouncerIdle_0
-  - first:
-      213: -3052389177202560804
-    second: BouncerIdle_1
-  - first:
-      213: -3589152486718457127
-    second: BouncerIdle_2
-  - first:
-      213: -6086069203058190789
-    second: BouncerIdle_3
+      213: 6019453725058403666
+    second: Zombie_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,89 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BouncerIdle_0
+      name: Zombie_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 320
-        height: 320
+        width: 35
+        height: 43
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03d4e4eeff7438110800000000000000
-      internalID: 1261931485134212400
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BouncerIdle_1
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cd03890373cb3a5d0800000000000000
-      internalID: -3052389177202560804
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BouncerIdle_2
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 0
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9dabf6854d4c03ec0800000000000000
-      internalID: -3589152486718457127
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BouncerIdle_3
-      rect:
-        serializedVersion: 2
-        x: 960
-        y: 0
-        width: 320
-        height: 320
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b3695412e40f98ba0800000000000000
-      internalID: -6086069203058190789
+      spriteID: 25d02004545698350800000000000000
+      internalID: 6019453725058403666
       vertices: []
       indices: 
       edges: []
@@ -200,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 79187447bd385ad4ea07b4c086806741
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -208,14 +133,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":320.0,"y":320.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      BouncerIdle_0: 1261931485134212400
-      BouncerIdle_1: -3052389177202560804
-      BouncerIdle_2: -3589152486718457127
-      BouncerIdle_3: -6086069203058190789
+      Zombie_0: 6019453725058403666
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
