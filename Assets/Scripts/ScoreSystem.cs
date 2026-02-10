@@ -10,8 +10,13 @@ public class ScoreSystem : MonoBehaviour
 
     private Text distanceText;
     private Text timeText;
-    public Text textScore;
-    public Text textHiScore;
+    private Text scoreText;
+
+    [Header("Scoring")]
+    public int MaximumScore = 999;
+    public float DistanceThreshold = 75f;
+    public float TimeThreshold = 15f;
+
 
     void Awake()
     {
@@ -26,6 +31,7 @@ public class ScoreSystem : MonoBehaviour
 
             distanceText = GameObject.Find("Distance").GetComponent<Text>();
             timeText = GameObject.Find("Time").GetComponent<Text>();
+            scoreText = GameObject.Find("Score").GetComponent<Text>();
         }
     }
 
@@ -45,7 +51,7 @@ public class ScoreSystem : MonoBehaviour
 
         distanceText.text = $"Distance: {totalDistance:0} units";
         timeText.text = $"Time: {totalTime:0.00} sec";
-        //textScore.text = CalculateScore(totalDistance, totalTime).ToString("0.00");
+        scoreText.text = $"Score: {CalculateScore(totalDistance, totalTime):000}";
     }
 
     private void OnDistanceChange(float positionDelta)
@@ -53,18 +59,18 @@ public class ScoreSystem : MonoBehaviour
         totalDistance += positionDelta;
     }
 
-    public float CalculateScore (float distance, float time)
+    public int CalculateScore (float distance, float time)
     {
-        const float minDistance = 600f;
-        const float minTime = 6f;
+        float distOver = Mathf.Max(0f, totalDistance - DistanceThreshold);
+        float timeOver = Mathf.Max(0f, totalTime - TimeThreshold);
 
-        float distanceW = 0.4f;
-        float timeW = 0.6f;
+        float distPenalty = distOver / (distOver + DistanceSoftness);
+        float timePenalty = timeOver / (timeOver + TimeSoftness);
 
-        float normDistance = distance / minDistance;
-        float normTime = minTime / time;
+        float combinedPenalty = (DistanceScoreWeight * distPenalty) + (TimeScoreWeight * timePenalty);
 
-        float score = distanceW * normDistance + timeW * normTime;
+        float tmp = MaximumScore * (1f - combinedPenalty);
+        int score = Mathf.Clamp(Mathf.RoundToInt(tmp), 0, MaximumScore);
         return score;
     }
 }

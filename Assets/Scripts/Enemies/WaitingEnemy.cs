@@ -20,7 +20,7 @@ public class WaitingEnemy : MonoBehaviour
     [SerializeField]
     public float RotationSpeed = 180.0f;
     public float MaxExposureTime = 1.0f;
-    public float ChaseSpeed = 4.0f;
+    public float ChaseSpeed = 2.0f;
     public float ReachDistance = 0.1f;
     public float AlignmentThreshold = 5f;
 
@@ -30,7 +30,7 @@ public class WaitingEnemy : MonoBehaviour
         playerDetector = GetComponentInChildren<PlayerDetector>();
         currentState = WaitingEnemyStates.Wait;
         originPoint = new GameObject($"{name}Origin").transform;
-        originPoint.SetParent(GameObject.Find("Waypoints").transform);
+        originPoint.SetParent(GameObject.Find("EnemyWaypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
     }
 
@@ -71,6 +71,14 @@ public class WaitingEnemy : MonoBehaviour
                 break;
             case WaitingEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
+
+                float colliderRadius = GetComponent<CircleCollider2D>().radius;
+                Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
+
+                if (playerCollider.Length > 0)
+                {
+                    SceneChanger.Instance.OnPlayerCaught();
+                }
 
                 if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
                 {
