@@ -1,0 +1,54 @@
+###############################################################################
+
+	Sprites used in this project are from Kenney Assets.
+
+		Author: Kenney.nl
+		Source: https://kenney.nl/assets
+		License: Creative Commons CC0 1.0 Universal (Public Domain)
+		License URL: https://creativecommons.org/publicdomain/zero/1.0/
+
+		These assets are released under the CC0 1.0 Universal license.
+		They can be used, modified and redistributed freely, including for commercial purposes.
+		Attribution is not required.
+
+###############################################################################
+
+	Font used in this project: Blue Winter
+
+		Author: jalkhurasan
+		Source: https://www.khurasanstudio.com
+		License: Free for personal and commercial use (as stated by the author)
+
+		Note:
+		This font is not released under a Creative Commons license.
+		It is used under the explicit permission granted by the author.
+
+###############################################################################
+
+	Cover Game Sprite
+		© 2026 Francina Suñer Móra
+		License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+		License URL: https://creativecommons.org/licenses/by/4.0/
+
+###############################################################################
+
+	Characters Sprites
+		© 2026 Luca de Marco Grases
+		License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+		License URL: https://creativecommons.org/licenses/by/4.0/
+
+###############################################################################
+
+	Beer Logo Sprite
+		© 2026 Laia Campos Carrillo
+		License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+		License URL: https://creativecommons.org/licenses/by/4.0/
+
+###############################################################################
+
+	Alarm Sprites
+		© 2026 Francina Suñer Móra
+		License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+		License URL: https://creativecommons.org/licenses/by/4.0/
+
+###############################################################################
