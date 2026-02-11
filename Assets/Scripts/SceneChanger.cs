@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -40,16 +41,6 @@ public class SceneChanger : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == titleScene)
-        {
-            Button button = GameObject.Find("Button")?.GetComponent<Button>();
-            if (button != null)
-            {
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(OnStartGame);
-            }
-        }
-
         if (scene.name == endingScene)
         {
             Text scoreText = GameObject.Find("ScoreText")?.GetComponent<Text>();
