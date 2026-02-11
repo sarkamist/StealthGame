@@ -52,10 +52,4 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
-
-    public void OnSaveScore()
-    {
-        PlayerPrefs.SetInt("Score", score);
-        score = PlayerPrefs.GetInt("Score");
-    }
 }

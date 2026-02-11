@@ -8,6 +8,7 @@ public class SceneChanger : MonoBehaviour
 
     private readonly string titleScene = "Title";
     private readonly string gameplayScene = "Gameplay";
+    private readonly string defeatScene = "Defeat";
     private readonly string endingScene = "Ending";
 
     private string CurrentScene => SceneManager.GetActiveScene().name;
@@ -28,11 +29,13 @@ public class SceneChanger : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        VictoryPoint.OnPlayerEnter += OnPlayerVictory;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        VictoryPoint.OnPlayerEnter -= OnPlayerVictory;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -57,7 +60,6 @@ public class SceneChanger : MonoBehaviour
         else
         {
             SceneManager.LoadScene(titleScene);
-            
         }
     }
 
@@ -65,9 +67,18 @@ public class SceneChanger : MonoBehaviour
     {
         if (CurrentScene == gameplayScene)
         {
+            SceneManager.LoadScene(defeatScene);
+        }
+    }
+
+    public void OnPlayerVictory()
+    {
+        if (CurrentScene == gameplayScene)
+        {
             SceneManager.LoadScene(endingScene);
         }
     }
+
     private void OnExitGame()
     {
 #if UNITY_EDITOR

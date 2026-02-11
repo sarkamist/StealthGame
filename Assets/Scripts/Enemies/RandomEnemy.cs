@@ -1,28 +1,30 @@
 using UnityEngine;
 
-enum WaitingEnemyStates
+enum RandomEnemyStates
 {
     Wait,
+    Roaming,
     Chase,
     Returning
 }
 
-public class WaitingEnemy : MonoBehaviour
+public class RandomEnemy : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
-    private WaitingEnemyStates currentState;
+    [SerializeField] private RandomEnemyStates currentState;
     private Transform originPoint;
-    private Transform currentTarget;
-    private bool isExposingPlayer = false;
-    private float currentExposureTime = 0;
+    [SerializeField] private Transform currentTarget;
+    [SerializeField] private float waitStart;
 
     [SerializeField] private SpriteRenderer alarmSpriteRenderer;
     [SerializeField] private Sprite NormalAlarm;
-    [SerializeField] private Sprite ActiveAlarm; 
+    [SerializeField] private Sprite ActiveAlarm;
 
+    [SerializeField] public float WaitDuration = 1.5f;
+    public float RoamingRadius = 4.0f;
+    public float RoamingSpeed = 2.0f;
     public float RotationSpeed = 180.0f;
-    public float MaxExposureTime = 1.0f;
     public float ChaseSpeed = 3.0f;
     public float ReachDistance = 0.1f;
     public float AlignmentThreshold = 5f;
@@ -31,7 +33,8 @@ public class WaitingEnemy : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         playerDetector = GetComponentInChildren<PlayerDetector>();
-        currentState = WaitingEnemyStates.Wait;
+        currentState = RandomEnemyStates.Wait;
+        waitStart = Time.time;
         originPoint = new GameObject($"{name}Origin").transform;
         originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
@@ -47,69 +50,59 @@ public class WaitingEnemy : MonoBehaviour
     {
         switch (currentState)
         {
-            case WaitingEnemyStates.Wait:
-                if (!isExposingPlayer && playerDetector.IsPlayerDetected)
-                {
-                    isExposingPlayer = true;
-                }
-                else if (isExposingPlayer && !playerDetector.DetectedPlayer)
-                {
-                    alarmSpriteRenderer.sprite = NormalAlarm;
-                    isExposingPlayer = false;
-                    currentExposureTime = 0;
+            case RandomEnemyStates.Wait:
+                if ((Time.time - waitStart) >= WaitDuration) {
+                    ChangeState(RandomEnemyStates.Roaming);
                 }
 
-                if (isExposingPlayer)
-                {
-                    if (alarmSpriteRenderer.sprite == NormalAlarm) alarmSpriteRenderer.sprite = ActiveAlarm;
-                    else if (alarmSpriteRenderer.sprite == ActiveAlarm) alarmSpriteRenderer.sprite = NormalAlarm;
-
-                    currentExposureTime += Time.fixedDeltaTime;
-                    if (currentExposureTime >= MaxExposureTime)
-                    {
-                        currentTarget = playerDetector.DetectedPlayer;
-                        ChangeState(WaitingEnemyStates.Chase);
-                    }
-                }
-                else
-                {
-                    rigidbody.transform.Rotate(0, 0, RotationSpeed * Time.fixedDeltaTime);
-                }
+                CheckPlayerDetection();
 
                 break;
-            case WaitingEnemyStates.Chase:
+            case RandomEnemyStates.Roaming:
+                MoveToCurrentTarget(RoamingSpeed);
+
+                if (Vector2.Distance(currentTarget.position, rigidbody.position) <= ReachDistance)
+                {
+                    ChangeState(RandomEnemyStates.Wait);
+                }
+
+                CheckPlayerDetection();
+
+                break;
+            case RandomEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
 
                 if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
                 {
-                    ChangeState(WaitingEnemyStates.Returning);
+                    ChangeState(RandomEnemyStates.Returning);
                 }
 
                 break;
-            case WaitingEnemyStates.Returning:
+            case RandomEnemyStates.Returning:
                 MoveToCurrentTarget(ChaseSpeed);
 
                 if (Vector2.Distance((Vector2)currentTarget.position, rigidbody.position) <= ReachDistance)
                 {
-                    ChangeState(WaitingEnemyStates.Wait);
+                    ChangeState(RandomEnemyStates.Wait);
                 }
 
                 break;
         }
     }
 
-    private void ChangeState(WaitingEnemyStates newState)
+    private void ChangeState(RandomEnemyStates newState)
     {
         switch (currentState)
         {
-            case WaitingEnemyStates.Wait:
-                isExposingPlayer = false;
-                currentExposureTime = 0;
-
+            case RandomEnemyStates.Wait:
                 break;
-            case WaitingEnemyStates.Chase:
+            case RandomEnemyStates.Roaming:
+                rigidbody.linearVelocity = Vector2.zero;
+                Destroy(GameObject.Find($"{name}RandomPoint"));
                 break;
-            case WaitingEnemyStates.Returning:
+            case RandomEnemyStates.Chase:
+                break;
+            case RandomEnemyStates.Returning:
                 playerDetector.gameObject.SetActive(true);
                 rigidbody.linearVelocity = Vector2.zero;
 
@@ -119,19 +112,27 @@ public class WaitingEnemy : MonoBehaviour
         currentState = newState;
         switch (currentState)
         {
-            case WaitingEnemyStates.Wait:
-                alarmSpriteRenderer.sprite = NormalAlarm;
-
+            case RandomEnemyStates.Wait:
+                currentTarget = null;
+                waitStart = Time.time;
                 break;
-            case WaitingEnemyStates.Chase:
+            case RandomEnemyStates.Roaming:
+                Vector3 center = originPoint.transform.position;
+                Vector2 offset = Random.insideUnitCircle * RoamingRadius;
+
+                Transform randomPoint = new GameObject($"{name}RandomPoint").transform;
+                randomPoint.SetParent(GameObject.Find("Waypoints").transform);
+                randomPoint.position = center + (Vector3) offset;
+
+                currentTarget = randomPoint;
+                break;
+            case RandomEnemyStates.Chase:
                 alarmSpriteRenderer.sprite = ActiveAlarm;
-
                 break;
-            case WaitingEnemyStates.Returning:
+            case RandomEnemyStates.Returning:
                 alarmSpriteRenderer.sprite = NormalAlarm;
                 currentTarget = originPoint;
                 playerDetector.gameObject.SetActive(false);
-
                 break;
         }
     }
@@ -156,6 +157,15 @@ public class WaitingEnemy : MonoBehaviour
         else
         {
             rigidbody.linearVelocity = Vector2.zero;
+        }
+    }
+
+    private void CheckPlayerDetection()
+    {
+        if (playerDetector.IsPlayerDetected)
+        {
+            currentTarget = playerDetector.DetectedPlayer;
+            ChangeState(RandomEnemyStates.Chase);
         }
     }
 }
