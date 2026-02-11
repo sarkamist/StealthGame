@@ -1,15 +1,34 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class CameraFollow : MonoBehaviour
 {
     public Transform target;
-    public Vector3 offset = new Vector3(0, 0, -10);
+    public TilemapCollider2D MapBounds;
+    public float SmoothSpeed = 0.5f;
 
-    void LateUpdate()
+    private float xMin, xMax, yMin, yMax;
+    private float camOrthSize, camHalfWidth;
+
+    private void Start()
+    {
+        xMin = MapBounds.bounds.min.x;
+        xMax = MapBounds.bounds.max.x;
+        yMin = MapBounds.bounds.min.y;
+        yMax = MapBounds.bounds.max.y;
+        camOrthSize = Camera.main.orthographicSize;
+        camHalfWidth = camOrthSize * Camera.main.aspect;
+    }
+
+    private void LateUpdate()
     {
         if (target != null)
         {
-            transform.position = target.position + offset;
+            float camX = Mathf.Clamp(target.position.x, xMin + camHalfWidth, xMax - camHalfWidth);
+            float camY = Mathf.Clamp(target.position.y, yMin + camOrthSize, yMax - camOrthSize);
+
+            Vector3 smoothPos = Vector3.Lerp(transform.position, new Vector3(camX, camY, transform.position.z), SmoothSpeed);
+            transform.position = smoothPos;
         }
     }
 }

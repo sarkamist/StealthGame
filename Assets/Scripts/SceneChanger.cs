@@ -49,6 +49,15 @@ public class SceneChanger : MonoBehaviour
                 button.onClick.AddListener(OnStartGame);
             }
         }
+
+        if (scene.name == endingScene)
+        {
+            Text scoreText = GameObject.Find("ScoreText")?.GetComponent<Text>();
+
+
+            int bestScore = ScoreSystem.Instance.SaveScore();
+            scoreText.text = $"Your final score is {ScoreSystem.Instance.CalculateScore():000}, while your record score is {bestScore:000}";
+        }
     }
 
     public void OnStartGame()

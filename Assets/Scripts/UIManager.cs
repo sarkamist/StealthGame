@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (ScoreSystem.Instance == null) return;
+
         if (distanceText != null) distanceText.text = $"Distance: {ScoreSystem.Instance.TotalDistance:0} units";
         if (timeText != null) timeText.text = $"Time: {ScoreSystem.Instance.TotalTime:0.00} sec";
         if (scoreText != null) scoreText.text = $"Score: {ScoreSystem.Instance.CalculateScore():000}";

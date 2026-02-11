@@ -1,6 +1,6 @@
 using UnityEngine;
 
-enum RandomEnemyStates
+public enum RandomEnemyStates
 {
     Wait,
     Roaming,
@@ -10,7 +10,7 @@ enum RandomEnemyStates
 
 public class RandomEnemy : MonoBehaviour
 {
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
     [SerializeField] private RandomEnemyStates currentState;
     private Transform originPoint;
@@ -28,6 +28,8 @@ public class RandomEnemy : MonoBehaviour
     public float ChaseSpeed = 3.0f;
     public float ReachDistance = 0.1f;
     public float AlignmentThreshold = 5f;
+
+    public RandomEnemyStates CurrentState => currentState;
 
     void Start()
     {
@@ -72,7 +74,15 @@ public class RandomEnemy : MonoBehaviour
             case RandomEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
 
-                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
+                float colliderRadius = GetComponent<CircleCollider2D>().radius;
+                Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
+
+                if (playerCollider.Length > 0)
+                {
+                    SceneChanger.Instance.OnPlayerCaught();
+                }
+
+                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.25f))
                 {
                     ChangeState(RandomEnemyStates.Returning);
                 }

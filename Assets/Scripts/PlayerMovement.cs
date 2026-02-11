@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private bool isMoving;
     private Vector2 lastPosition;
-
-    private int score = 2000;
 
     [SerializeField]
     private float Speed = 5.0f;

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 
-enum PatrollingEnemyStates
+public enum PatrollingEnemyStates
 {
     Patrol,
     Chase,
@@ -11,7 +12,7 @@ enum PatrollingEnemyStates
 
 public class PatrollingEnemy : MonoBehaviour
 {
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
     private PatrollingEnemyStates currentState;
     private int currentIndex;
@@ -28,6 +29,8 @@ public class PatrollingEnemy : MonoBehaviour
     public float ReachDistance = 0.1f;
     public float RotationSpeed = 180.0f;
     public float AlignmentThreshold = 5.0f;
+
+    public PatrollingEnemyStates CurrentState => currentState;
 
 
     void Start()
@@ -74,7 +77,7 @@ public class PatrollingEnemy : MonoBehaviour
                     SceneChanger.Instance.OnPlayerCaught();
                 }
 
-                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
+                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.25f))
                 {
                     ChangeState(PatrollingEnemyStates.Returning);
                 }

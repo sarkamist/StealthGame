@@ -89,7 +89,7 @@ public class ScoreSystem : MonoBehaviour
         }
     }
 
-    public void OnSaveScore()
+    public int SaveScore()
     {
         int storedScore = PlayerPrefs.GetInt("Score");
         int currentScore = CalculateScore();
@@ -97,6 +97,11 @@ public class ScoreSystem : MonoBehaviour
         if (currentScore >= storedScore)
         {
             PlayerPrefs.SetInt("Score", currentScore);
+            return currentScore;
+        }
+        else
+        {
+            return storedScore;
         }
     }
 }

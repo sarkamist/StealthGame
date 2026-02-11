@@ -1,6 +1,6 @@
 using UnityEngine;
 
-enum WaitingEnemyStates
+public enum WaitingEnemyStates
 {
     Wait,
     Chase,
@@ -9,23 +9,30 @@ enum WaitingEnemyStates
 
 public class WaitingEnemy : MonoBehaviour
 {
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
     private WaitingEnemyStates currentState;
     private Transform originPoint;
     private Transform currentTarget;
     private bool isExposingPlayer = false;
-    private float currentExposureTime = 0;
+    private float currentExposureTime = 0.0f;
+    private float alarmFlickerTime = 0.25f;
+    private Color arcAlertColor;
 
-    [SerializeField] private SpriteRenderer alarmSpriteRenderer;
-    [SerializeField] private Sprite NormalAlarm;
-    [SerializeField] private Sprite ActiveAlarm; 
-
+    [Header("Behaviour Parameters")]
     public float RotationSpeed = 180.0f;
-    public float MaxExposureTime = 1.0f;
+    public float MaxExposureTime = 0.75f;
     public float ChaseSpeed = 3.0f;
     public float ReachDistance = 0.1f;
     public float AlignmentThreshold = 5f;
+
+    [Header("Alarm Parameters")]
+    public SpriteRenderer AlarmSpriteRenderer;
+    public VisionRenderer VisionArcRenderer;
+    public Sprite NormalAlarm;
+    public Sprite ActiveAlarm;
+
+    public WaitingEnemyStates CurrentState => currentState;
 
     void Start()
     {
@@ -35,7 +42,8 @@ public class WaitingEnemy : MonoBehaviour
         originPoint = new GameObject($"{name}Origin").transform;
         originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
-        alarmSpriteRenderer.sprite = NormalAlarm;
+        AlarmSpriteRenderer.sprite = NormalAlarm;
+        arcAlertColor = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, VisionArcRenderer.VisionColor.a);
     }
 
     void FixedUpdate()
@@ -54,15 +62,28 @@ public class WaitingEnemy : MonoBehaviour
                 }
                 else if (isExposingPlayer && !playerDetector.DetectedPlayer)
                 {
-                    alarmSpriteRenderer.sprite = NormalAlarm;
+                    AlarmSpriteRenderer.sprite = NormalAlarm;
+                    VisionArcRenderer.ResetColor();
                     isExposingPlayer = false;
                     currentExposureTime = 0;
                 }
 
                 if (isExposingPlayer)
                 {
-                    if (alarmSpriteRenderer.sprite == NormalAlarm) alarmSpriteRenderer.sprite = ActiveAlarm;
-                    else if (alarmSpriteRenderer.sprite == ActiveAlarm) alarmSpriteRenderer.sprite = NormalAlarm;
+                    if (currentExposureTime >= alarmFlickerTime)
+                    {
+                        alarmFlickerTime += 0.0625f;
+                        if (AlarmSpriteRenderer.sprite == NormalAlarm)
+                        {
+                            AlarmSpriteRenderer.sprite = ActiveAlarm;
+                            VisionArcRenderer.SetColor(arcAlertColor);
+                        }
+                        else if (AlarmSpriteRenderer.sprite == ActiveAlarm)
+                        {
+                            AlarmSpriteRenderer.sprite = NormalAlarm;
+                            VisionArcRenderer.ResetColor();
+                        }
+                    }
 
                     currentExposureTime += Time.fixedDeltaTime;
                     if (currentExposureTime >= MaxExposureTime)
@@ -80,7 +101,15 @@ public class WaitingEnemy : MonoBehaviour
             case WaitingEnemyStates.Chase:
                 MoveToCurrentTarget(ChaseSpeed);
 
-                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.5f))
+                float colliderRadius = GetComponent<CircleCollider2D>().radius;
+                Collider2D[] playerCollider = Physics2D.OverlapCircleAll(playerDetector.transform.position, colliderRadius, playerDetector.PlayerLayer);
+
+                if (playerCollider.Length > 0)
+                {
+                    SceneChanger.Instance.OnPlayerCaught();
+                }
+
+                if (Vector2.Distance(currentTarget.position, rigidbody.position) > (playerDetector.DetectionRange * 1.25f))
                 {
                     ChangeState(WaitingEnemyStates.Returning);
                 }
@@ -104,7 +133,9 @@ public class WaitingEnemy : MonoBehaviour
         {
             case WaitingEnemyStates.Wait:
                 isExposingPlayer = false;
-                currentExposureTime = 0;
+                currentExposureTime = 0.0f;
+                alarmFlickerTime = 0.5f;
+                VisionArcRenderer.ResetColor();
 
                 break;
             case WaitingEnemyStates.Chase:
@@ -120,15 +151,15 @@ public class WaitingEnemy : MonoBehaviour
         switch (currentState)
         {
             case WaitingEnemyStates.Wait:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                AlarmSpriteRenderer.sprite = NormalAlarm;
 
                 break;
             case WaitingEnemyStates.Chase:
-                alarmSpriteRenderer.sprite = ActiveAlarm;
+                AlarmSpriteRenderer.sprite = ActiveAlarm;
 
                 break;
             case WaitingEnemyStates.Returning:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                AlarmSpriteRenderer.sprite = NormalAlarm;
                 currentTarget = originPoint;
                 playerDetector.gameObject.SetActive(false);
 

@@ -12,7 +12,7 @@ public class PlayerDetector : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
 
         Vector3 origin = transform.position;
         float halfAngle = VisionAngle * 0.5f;
