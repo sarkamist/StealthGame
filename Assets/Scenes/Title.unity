@@ -704,7 +704,7 @@ MonoBehaviour:
   MaximumScore: 999
   MinimumScore: 0
   DistanceThreshold: 75
-  TimeThreshold: 20
+  TimeThreshold: 17.5
   DistanceWeight: 2.5
   TimeWeight: 1
   PenaltyExponent: 1.45

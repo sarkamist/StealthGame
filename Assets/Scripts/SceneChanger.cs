@@ -44,10 +44,17 @@ public class SceneChanger : MonoBehaviour
         if (scene.name == endingScene)
         {
             Text scoreText = GameObject.Find("ScoreText")?.GetComponent<Text>();
-
-
+            int currentScore = ScoreSystem.Instance.CalculateScore();
             int bestScore = ScoreSystem.Instance.SaveScore();
-            scoreText.text = $"Your final score is {ScoreSystem.Instance.CalculateScore():000}, while your record score is {bestScore:000}";
+
+            if (currentScore < bestScore)
+            {
+                scoreText.text = $"Your final score is {currentScore:000}, while your record score is {bestScore:000}";
+            }
+            else
+            {
+                scoreText.text = $"Your final score is {currentScore:000}, this is your new record score!";
+            }
         }
     }
 
