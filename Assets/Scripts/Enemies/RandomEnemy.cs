@@ -12,16 +12,16 @@ public class RandomEnemy : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     private PlayerDetector playerDetector;
-    [SerializeField] private RandomEnemyStates currentState;
     private Transform originPoint;
+    [SerializeField] private RandomEnemyStates currentState;
     [SerializeField] private Transform currentTarget;
     [SerializeField] private float waitStart;
 
     [SerializeField] private SpriteRenderer alarmSpriteRenderer;
-    [SerializeField] private Sprite NormalAlarm;
-    [SerializeField] private Sprite ActiveAlarm;
+    [SerializeField] private Sprite normalAlarm;
+    [SerializeField] private Sprite activeAlarm;
 
-    [SerializeField] public float WaitDuration = 1.5f;
+    public float WaitDuration = 1.5f;
     public float RoamingRadius = 4.0f;
     public float RoamingSpeed = 2.0f;
     public float RotationSpeed = 180.0f;
@@ -38,7 +38,7 @@ public class RandomEnemy : MonoBehaviour
         originPoint = new GameObject($"{name}Origin").transform;
         originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
-        alarmSpriteRenderer.sprite = NormalAlarm;
+        alarmSpriteRenderer.sprite = normalAlarm;
     }
 
     void FixedUpdate()
@@ -105,11 +105,11 @@ public class RandomEnemy : MonoBehaviour
             case RandomEnemyStates.Returning:
                 playerDetector.gameObject.SetActive(true);
                 rigidbody.linearVelocity = Vector2.zero;
-
                 break;
         }
 
         currentState = newState;
+
         switch (currentState)
         {
             case RandomEnemyStates.Wait:
@@ -127,10 +127,10 @@ public class RandomEnemy : MonoBehaviour
                 currentTarget = randomPoint;
                 break;
             case RandomEnemyStates.Chase:
-                alarmSpriteRenderer.sprite = ActiveAlarm;
+                alarmSpriteRenderer.sprite = activeAlarm;
                 break;
             case RandomEnemyStates.Returning:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                alarmSpriteRenderer.sprite = normalAlarm;
                 currentTarget = originPoint;
                 playerDetector.gameObject.SetActive(false);
                 break;

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
 
 public class ScoreSystem : MonoBehaviour
 {
@@ -83,7 +81,8 @@ public class ScoreSystem : MonoBehaviour
             totalDistance = 0f;
             totalTime = 0f;
             isScoring = true;
-        } else
+        }
+        else
         {
             isScoring = false;
         }

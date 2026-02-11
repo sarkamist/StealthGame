@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 enum PatrollingEnemyStates
@@ -19,8 +18,8 @@ public class PatrollingEnemy : MonoBehaviour
     
 
     [SerializeField] private SpriteRenderer alarmSpriteRenderer;
-    [SerializeField] private Sprite NormalAlarm;
-    [SerializeField] private Sprite ActiveAlarm;
+    [SerializeField] private Sprite normalAlarm;
+    [SerializeField] private Sprite activeAlarm;
 
     public List<Transform> Waypoints;
     public float PatrolSpeed = 1.5f;
@@ -28,7 +27,6 @@ public class PatrollingEnemy : MonoBehaviour
     public float ReachDistance = 0.1f;
     public float RotationSpeed = 180.0f;
     public float AlignmentThreshold = 5.0f;
-
 
     void Start()
     {
@@ -38,7 +36,7 @@ public class PatrollingEnemy : MonoBehaviour
         currentIndex = 0;
         currentTarget = Waypoints[0];
         
-        alarmSpriteRenderer.sprite = NormalAlarm;
+        alarmSpriteRenderer.sprite = normalAlarm;
     }
 
     void FixedUpdate()
@@ -78,6 +76,7 @@ public class PatrollingEnemy : MonoBehaviour
                 {
                     ChangeState(PatrollingEnemyStates.Returning);
                 }
+
                 break;
             case PatrollingEnemyStates.Returning:
                 MoveToCurrentTarget(ChaseSpeed);
@@ -91,18 +90,17 @@ public class PatrollingEnemy : MonoBehaviour
         }
     }
 
-    private void ChangeState(PatrollingEnemyStates newState) {
+    private void ChangeState(PatrollingEnemyStates newState)
+    {
         switch (currentState)
         {
             case PatrollingEnemyStates.Patrol:
                 break;
             case PatrollingEnemyStates.Chase:
                 rigidbody.linearVelocity = Vector2.zero;
-
                 break;
             case PatrollingEnemyStates.Returning:
                 playerDetector.gameObject.SetActive(true);
-
                 break;
         }
 
@@ -111,13 +109,13 @@ public class PatrollingEnemy : MonoBehaviour
         switch (currentState)
         {
             case PatrollingEnemyStates.Patrol:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                alarmSpriteRenderer.sprite = normalAlarm;
                 break;
             case PatrollingEnemyStates.Chase:
-                alarmSpriteRenderer.sprite = ActiveAlarm;
+                alarmSpriteRenderer.sprite = activeAlarm;
                 break;
             case PatrollingEnemyStates.Returning:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                alarmSpriteRenderer.sprite = normalAlarm;
                 Transform closestWaypoint = null;
                 float closestDistance = float.MaxValue;
 
@@ -135,7 +133,6 @@ public class PatrollingEnemy : MonoBehaviour
                 currentTarget = closestWaypoint;
 
                 playerDetector.gameObject.SetActive(false);
-
                 break;
         }
     }

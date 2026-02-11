@@ -18,8 +18,8 @@ public class WaitingEnemy : MonoBehaviour
     private float currentExposureTime = 0;
 
     [SerializeField] private SpriteRenderer alarmSpriteRenderer;
-    [SerializeField] private Sprite NormalAlarm;
-    [SerializeField] private Sprite ActiveAlarm; 
+    [SerializeField] private Sprite normalAlarm;
+    [SerializeField] private Sprite activeAlarm; 
 
     public float RotationSpeed = 180.0f;
     public float MaxExposureTime = 1.0f;
@@ -35,7 +35,7 @@ public class WaitingEnemy : MonoBehaviour
         originPoint = new GameObject($"{name}Origin").transform;
         originPoint.SetParent(GameObject.Find("Waypoints").transform);
         originPoint.position = new Vector3(rigidbody.position.x, rigidbody.position.y, 0);
-        alarmSpriteRenderer.sprite = NormalAlarm;
+        alarmSpriteRenderer.sprite = normalAlarm;
     }
 
     void FixedUpdate()
@@ -54,15 +54,15 @@ public class WaitingEnemy : MonoBehaviour
                 }
                 else if (isExposingPlayer && !playerDetector.DetectedPlayer)
                 {
-                    alarmSpriteRenderer.sprite = NormalAlarm;
+                    alarmSpriteRenderer.sprite = normalAlarm;
                     isExposingPlayer = false;
                     currentExposureTime = 0;
                 }
 
                 if (isExposingPlayer)
                 {
-                    if (alarmSpriteRenderer.sprite == NormalAlarm) alarmSpriteRenderer.sprite = ActiveAlarm;
-                    else if (alarmSpriteRenderer.sprite == ActiveAlarm) alarmSpriteRenderer.sprite = NormalAlarm;
+                    if (alarmSpriteRenderer.sprite == normalAlarm) alarmSpriteRenderer.sprite = activeAlarm;
+                    else if (alarmSpriteRenderer.sprite == activeAlarm) alarmSpriteRenderer.sprite = normalAlarm;
 
                     currentExposureTime += Time.fixedDeltaTime;
                     if (currentExposureTime >= MaxExposureTime)
@@ -105,33 +105,29 @@ public class WaitingEnemy : MonoBehaviour
             case WaitingEnemyStates.Wait:
                 isExposingPlayer = false;
                 currentExposureTime = 0;
-
                 break;
             case WaitingEnemyStates.Chase:
                 break;
             case WaitingEnemyStates.Returning:
                 playerDetector.gameObject.SetActive(true);
                 rigidbody.linearVelocity = Vector2.zero;
-
                 break;
         }
 
         currentState = newState;
+
         switch (currentState)
         {
             case WaitingEnemyStates.Wait:
-                alarmSpriteRenderer.sprite = NormalAlarm;
-
+                alarmSpriteRenderer.sprite = normalAlarm;
                 break;
             case WaitingEnemyStates.Chase:
-                alarmSpriteRenderer.sprite = ActiveAlarm;
-
+                alarmSpriteRenderer.sprite = activeAlarm;
                 break;
             case WaitingEnemyStates.Returning:
-                alarmSpriteRenderer.sprite = NormalAlarm;
+                alarmSpriteRenderer.sprite = normalAlarm;
                 currentTarget = originPoint;
                 playerDetector.gameObject.SetActive(false);
-
                 break;
         }
     }

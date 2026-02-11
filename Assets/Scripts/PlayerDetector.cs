@@ -6,7 +6,6 @@ public class PlayerDetector : MonoBehaviour
     public LayerMask WhatIsVisible;
     public float DetectionRange;
     public float VisionAngle;
-
     public bool IsPlayerDetected;
     public Transform DetectedPlayer;
 
@@ -32,6 +31,7 @@ public class PlayerDetector : MonoBehaviour
             Gizmos.DrawLine(prev, point);
             prev = point;
         }
+
         Gizmos.DrawLine(prev, origin);
 
         Gizmos.color = Color.white;
